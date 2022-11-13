@@ -186,14 +186,15 @@ class DownloadManager {
         Text('클립 로드 완료! 총 $_fullCount 개의 클립을 찾았습니다.\n예상용량 : ${filesize((_fullVideoDuration * 774000).round())}'),
         const Text('Download Start...')
       ]);
-      downloadClips();
+      downloadClips(context);
     }
   }
 
-  void downloadClips() async {
+  void downloadClips(BuildContext context) async {
     _count = 0;
     _fullFileSize = 0;
     var client = http.Client();
+    final Completer<bool> allClipCompleter = Completer();
     for (var clip in clipDatas) {
       if (!onDownload.value) {
         return;
@@ -208,6 +209,10 @@ class DownloadManager {
               '다운로드 실패! : $clip',
               style: const TextStyle(color: Colors.red),
             ));
+            if((_count + _failedCount) == _fullCount!){
+              print('$_count : ${(_count + _failedCount) == _fullCount!}');
+              allClipCompleter.complete(false);
+            }
             return;
           }
 
@@ -231,9 +236,18 @@ class DownloadManager {
                                 color: Colors.blue.withOpacity(0.3),
                               )),
                     ),
-                    Text(
-                      "다운로드중 : ${clip.filename()}",
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "다운로드중 : ${clip.filename().replaceAll('', '\u200B')}",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(filesize(originCLipSize), style: const TextStyle(color: Colors.black45),)
+                      ],
                     ),
                   ],
                 ),
@@ -271,9 +285,13 @@ class DownloadManager {
 
           _count++;
           progress.value = _count / _fullCount!;
+          print('$_count : ${(_count + _failedCount) == _fullCount!}');
+          if((_count + _failedCount) == _fullCount!) {
+            allClipCompleter.complete(true);
+          }
       }.call().whenComplete(() => resource.release());
     }
-    final poolRes = await _downloadPool!.request();
+    await allClipCompleter.future;
     Logger.addAll([
       Text(
         "다운로드 완료! 총 $_count개 / ${filesize(_fullFileSize)}",
@@ -281,8 +299,8 @@ class DownloadManager {
       ),
       if (_failedCount > 0) Text("다운로드 실패 수 : $_failedCount", style: const TextStyle(color: Colors.orange))
     ]);
+    showDefaultDialog(context, "다운로드가 완료되었습니다!");
     finishDownload(true);
-    poolRes.release();
   }
 
   void stopDownload(BuildContext context) async {
