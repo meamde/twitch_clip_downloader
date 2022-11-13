@@ -3,14 +3,17 @@
 flutter twitch clip downloader
 
 ## Getting Started
+플러터로 작성한 트위치 전체 클립 다운로더입니다.
 
-This project is a starting point for a Flutter application.
+1. 스트리머 명에 방송국 주소 뒤에 붙는 스트리머 아이디 (twitch.tv/스트리머아이디)를 넣고 Set을 누른다
+2. 스트리머가 선택되어 닉네임란에 닉네임과 방송시작일이 뜨면 클립들을 다운로드받을 경로를 선택한다
+3. 시작버튼을 누른다
+로 간단히 사용할 수 있으며, 방송시작일을 변경하면 해당 시점 이후의 클립만을 다운받게 됩니다.
 
-A few resources to get you started if this is your first Flutter project:
+트위치 API의 페이징 기능 특성상 같은 구간을 조회해도 누락되는 클립들이 있어서 기본 5회 같은 구간을 검색하도록 해두었으며
+누락이 상관없으면 1회만 하면 더 빠르게 끝나고, 추가로 누락된게 있으면 더 많은 횟수로 늘려주시면 됩니다.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+코드를 직접 사용시에는 트위치 client id 와 secret 을 받아 
+--dart-define=clientId=
+--dart-define=clientSecret=
+인자를 추가하여 사용하시면 됩니다.
