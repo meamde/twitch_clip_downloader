@@ -43,3 +43,19 @@ void main() async {
   });
 }
 
+class TwitchClipDownloader extends StatelessWidget {
+  const TwitchClipDownloader({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Twitch Clip Downloader',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const TwitchClipDownloaderWidget(),
+    );
+  }
+}
+
