@@ -56,12 +56,19 @@ class TwitchManager {
     final res = await http.get(Uri.https('api.twitch.tv', '/helix/users', {'login': broadcasterLogin}),
         headers: authHeader);
 
-    final resMap = json.decode(res.body);
-    List<dynamic> dataList = resMap['data'];
-    if (res.statusCode != 200 || dataList.isEmpty) {
+    if (res.statusCode != 200) {
       showDefaultDialog(context, "존재하지 않는 스트리머입니다.");
       return null;
     }
+
+    final resMap = json.decode(res.body);
+    List<dynamic> dataList = resMap['data'];
+
+    if(dataList.isEmpty) {
+      showDefaultDialog(context, "존재하지 않는 스트리머입니다.");
+      return null;
+    }
+
     final data = dataList[0];
     _broadcasterData = BroadcasterData(data['id'], DateTime.parse(data['created_at']), data['display_name'], broadcasterLogin);
     return _broadcasterData;

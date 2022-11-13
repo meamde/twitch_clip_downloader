@@ -4,7 +4,7 @@ import 'dart:core';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:twitch_clip_downloader/twitch_clip_downloader.dart';
+import 'package:twitch_clip_downloader/service/twitch_clip_downloader.dart';
 
 void showDefaultDialog(BuildContext context, String text) {
   showDialog(

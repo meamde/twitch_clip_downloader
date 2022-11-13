@@ -11,11 +11,13 @@ class ClipData {
   final DateTime createdTime;
   final String title;
   final String thumbnailUrl;
+  final String clipUrl;
   String? _url;
+  String? _filename;
 
-  ClipData(this.broadcasterName, this.cliperName, this.createdTime, this.title, this.thumbnailUrl);
+  ClipData(this.broadcasterName, this.cliperName, this.createdTime, this.title, this.thumbnailUrl, this.clipUrl);
 
-  String filename() =>
+  String filename() => _filename ??=
       sanitizeFilename('[$broadcasterName][${dateformat(createdTime)}][cliper-$cliperName] $title.mp4');
 
   String getUrl() {
@@ -30,6 +32,16 @@ class ClipData {
     // print(_url);
     return _url ?? '';
   }
+
+  Map<String, dynamic> toMap() => {
+    'broadcasterName': broadcasterName,
+    'cliper': cliperName,
+    'createdAt': createdTime.toIso8601String(),
+    'title': title,
+    'url': getUrl(),
+    'filename': filename(),
+    'clipUrl': clipUrl
+  };
 
   @override
   String toString() => 'url : ${getUrl()}\nname : ${filename()}';
