@@ -35,8 +35,8 @@ void main() async {
   runApp(const TwitchClipDownloader());
 
   doWhenWindowReady(() {
-    const initialSize = Size(700, 450);
-    appWindow.minSize = initialSize;
+    const initialSize = Size(850, 450);
+    appWindow.minSize = const Size(740, 450);
     appWindow.size = initialSize;
     appWindow.alignment = Alignment.center;
     appWindow.show();

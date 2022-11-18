@@ -242,7 +242,7 @@ class DownloadManager {
                       children: [
                         Expanded(
                           child: Text(
-                            "다운로드중 : ${clip.filename().replaceAll('', '\u200B')}",
+                            "다운로드중 : ${clip.filename()}",
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
